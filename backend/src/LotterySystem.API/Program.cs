@@ -28,6 +28,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+var ensureCreatedOnStartup = builder.Configuration.GetValue("Database:EnsureCreatedOnStartup", false);
+if (ensureCreatedOnStartup)
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<LotteryDbContext>();
+    await db.Database.EnsureCreatedAsync();
+}
+
 var runMigrationsOnStartup = builder.Configuration.GetValue("Database:RunMigrationsOnStartup", app.Environment.IsDevelopment());
 if (runMigrationsOnStartup)
 {
