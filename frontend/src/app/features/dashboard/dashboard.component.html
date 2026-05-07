@@ -1,0 +1,36 @@
+<section class="pb-4">
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Admin Dashboard</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400">Realtime overview of lottery operations</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span *ngIf="state.refreshing()" class="text-xs text-slate-500">Updating...</span>
+      <button mat-stroked-button (click)="reload()">Refresh</button>
+    </div>
+  </div>
+
+  <div *ngIf="state.loading()" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-4">
+    <div *ngFor="let i of [1,2,3,4]" class="h-28 rounded-2xl skeleton"></div>
+  </div>
+
+  <div *ngIf="state.error()" class="rounded-xl bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-200 px-3 py-2 mb-4">
+    {{ state.error() }}
+  </div>
+
+  <ng-container *ngIf="state.data() as vm">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-4">
+      <app-metric-card title="Total Sales Today" [value]="vm.totalSalesToday" subtitle="Live sales volume"></app-metric-card>
+      <app-metric-card title="Total Payout" [value]="vm.totalPayout" subtitle="Estimated payout"></app-metric-card>
+      <app-metric-card title="Profit Summary" [value]="vm.profitSummary" subtitle="Sales minus payout"></app-metric-card>
+      <app-metric-card title="Open Rounds" [value]="openRoundsCount()" [currency]="false" subtitle="Active draw rounds"></app-metric-card>
+    </div>
+
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-3">
+      <div class="xl:col-span-2"><app-sales-chart-widget [points]="vm.chart"></app-sales-chart-widget></div>
+      <app-risky-numbers-widget [items]="vm.topRiskyNumbers"></app-risky-numbers-widget>
+      <app-recent-tickets-widget [tickets]="vm.recentTickets"></app-recent-tickets-widget>
+      <app-round-status-widget [rounds]="vm.rounds"></app-round-status-widget>
+    </div>
+  </ng-container>
+</section>

@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: lottery-api
+    env: docker
+    rootDir: backend/src/LotterySystem.API
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://+:10000
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: Jwt__Issuer
+        value: LotterySystem
+      - key: Jwt__Audience
+        value: LotterySystem.Client
+      - key: Jwt__Key
+        sync: false
+      - key: Database__EnableDetailedErrors
+        value: false
+      - key: Database__EnableSensitiveDataLogging
+        value: false

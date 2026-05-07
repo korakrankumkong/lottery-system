@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/backend/" />
+  <Folder Name="/backend/src/">
+    <Project Path="backend/src/LotterySystem.API/LotterySystem.API.csproj" />
+    <Project Path="backend/src/LotterySystem.Application/LotterySystem.Application.csproj" />
+    <Project Path="backend/src/LotterySystem.Domain/LotterySystem.Domain.csproj" />
+    <Project Path="backend/src/LotterySystem.Infrastructure/LotterySystem.Infrastructure.csproj" />
+  </Folder>
+</Solution>

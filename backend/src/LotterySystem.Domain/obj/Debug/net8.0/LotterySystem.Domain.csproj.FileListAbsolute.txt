@@ -1,0 +1,11 @@
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\bin\Debug\net8.0\LotterySystem.Domain.deps.json
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\bin\Debug\net8.0\LotterySystem.Domain.dll
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\bin\Debug\net8.0\LotterySystem.Domain.pdb
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.AssemblyInfoInputs.cache
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.AssemblyInfo.cs
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.csproj.CoreCompileInputs.cache
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.dll
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\refint\LotterySystem.Domain.dll
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.pdb
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\ref\LotterySystem.Domain.dll

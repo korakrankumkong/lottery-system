@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.touch-field :is(input, textarea, .mat-mdc-select-trigger) {
+  font-size: 1rem;
+}
+
+textarea {
+  font-size: 1.05rem;
+  line-height: 1.4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    color-scheme: dark;
+  }
+}

@@ -1,0 +1,13 @@
+<div class="min-h-screen">
+  <mat-toolbar class="!bg-sky-700 !text-white sticky top-0 z-30">
+    <span class="font-semibold">LotteryOps</span>
+    <span class="flex-1"></span>
+    <button mat-button routerLink="/dashboard">Dashboard</button>
+    <button mat-button routerLink="/ticket-entry">Entry</button>
+    <button mat-button routerLink="/results">Results</button>
+    <button mat-button *ngIf="auth.isLoggedIn()" (click)="auth.logout()">Logout</button>
+  </mat-toolbar>
+  <main class="p-3 md:p-6 max-w-7xl mx-auto">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,87 @@
+<section class="ticket-entry-page pb-28">
+  <header class="mb-3">
+    <h1 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100">Fast Ticket Entry</h1>
+    <p class="text-sm text-slate-600 dark:text-slate-300">Type one line per item: <span class="font-semibold">123=100</span> or <span class="font-semibold">123/100</span></p>
+  </header>
+
+  <mat-card class="p-3 md:p-4 rounded-2xl shadow-sm">
+    <div *ngIf="state.loading()" class="flex items-center gap-2 py-3">
+      <mat-spinner diameter="24"></mat-spinner>
+      <span>Loading customers and rounds...</span>
+    </div>
+
+    <div *ngIf="state.loadError()" class="rounded-xl bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-200 px-3 py-2 text-sm mb-3">
+      {{ state.loadError() }}
+      <button mat-button class="ml-2" (click)="loadLookupData()">Retry</button>
+    </div>
+
+    <form [formGroup]="form" class="space-y-3">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <mat-form-field appearance="outline" class="w-full touch-field">
+          <mat-label>Customer</mat-label>
+          <mat-select formControlName="customerId">
+            <mat-option *ngFor="let customer of state.customers()" [value]="customer.id">
+              {{ customer.name }}{{ customer.phoneNumber ? ' • ' + customer.phoneNumber : '' }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.customerId.touched && form.controls.customerId.invalid">Customer is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full touch-field">
+          <mat-label>Lottery Round</mat-label>
+          <mat-select formControlName="lotteryRoundId">
+            <mat-option *ngFor="let round of state.rounds()" [value]="round.id">
+              {{ round.code }} • {{ round.drawDate }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.lotteryRoundId.touched && form.controls.lotteryRoundId.invalid">Round is required.</mat-error>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="w-full touch-field">
+        <mat-label>Quick Input</mat-label>
+        <textarea #rawInput matInput rows="10" formControlName="quickInput" (keyup)="parseNow()" (keydown)="onKeydown($event)" placeholder="123=100&#10;456=50&#10;89/200"></textarea>
+        <mat-hint>Tip: Press Ctrl+Enter (or Cmd+Enter) to save instantly.</mat-hint>
+        <mat-error *ngIf="form.controls.quickInput.touched && form.controls.quickInput.invalid">Ticket input is required.</mat-error>
+      </mat-form-field>
+    </form>
+  </mat-card>
+
+  <mat-card class="mt-3 p-3 rounded-2xl">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-lg font-semibold">Ticket Preview</h2>
+      <span class="text-sm text-slate-500 dark:text-slate-400">{{ state.itemCount() }} items</span>
+    </div>
+
+    <div *ngIf="state.parseErrors().length" class="rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-200 px-3 py-2 text-sm mb-3">
+      <div *ngFor="let err of state.parseErrors()">Line {{ err.line }}: {{ err.reason }} ({{ err.value }})</div>
+    </div>
+
+    <div *ngIf="!state.parseErrors().length && !state.itemCount()" class="text-sm text-slate-500 dark:text-slate-400">No items parsed yet.</div>
+
+    <div class="space-y-1 max-h-64 overflow-auto" *ngIf="state.itemCount()">
+      <div *ngFor="let item of state.items(); let i = index" class="flex items-center justify-between rounded-lg px-3 py-2 bg-slate-50 dark:bg-slate-800">
+        <span class="font-semibold">#{{ i + 1 }} {{ item.number }}</span>
+        <span class="font-bold">{{ item.amount | number:'1.0-2' }}</span>
+      </div>
+    </div>
+
+    <div class="mt-3 flex items-center justify-between text-base font-bold">
+      <span>Total</span>
+      <span>{{ state.total() | number:'1.0-2' }}</span>
+    </div>
+
+    <div *ngIf="state.saveError()" class="mt-2 text-sm text-red-600 dark:text-red-300">{{ state.saveError() }}</div>
+    <div *ngIf="state.saveSuccess()" class="mt-2 text-sm text-emerald-700 dark:text-emerald-300">{{ state.saveSuccess() }}</div>
+  </mat-card>
+</section>
+
+<div class="sticky-action-bar fixed bottom-0 left-0 right-0 border-t border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-3">
+  <div class="max-w-7xl mx-auto flex items-center gap-2">
+    <button mat-stroked-button class="h-12 flex-1" (click)="clearAll()" [disabled]="state.saving()">Clear</button>
+    <button mat-flat-button color="primary" class="h-12 flex-[2] text-base" (click)="saveTicket()" [disabled]="state.saving() || state.loading()">
+      <span *ngIf="!state.saving()">Save Ticket ({{ state.total() | number:'1.0-2' }})</span>
+      <span *ngIf="state.saving()" class="inline-flex items-center gap-2"><mat-spinner diameter="18"></mat-spinner>Saving...</span>
+    </button>
+  </div>
+</div>

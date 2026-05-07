@@ -1,0 +1,40 @@
+<section class="space-y-3">
+  <mat-card class="p-4">
+    <h2 class="text-xl font-semibold mb-3">Reporting Module</h2>
+    <form [formGroup]="filterForm" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+      <mat-form-field><mat-label>From</mat-label><input matInput type="datetime-local" [value]="(filterForm.value.fromUtc || '').slice(0,16)" (change)="filterForm.patchValue({fromUtc: $any($event.target).value + ':00.000Z'})"></mat-form-field>
+      <mat-form-field><mat-label>To</mat-label><input matInput type="datetime-local" [value]="(filterForm.value.toUtc || '').slice(0,16)" (change)="filterForm.patchValue({toUtc: $any($event.target).value + ':00.000Z'})"></mat-form-field>
+      <mat-form-field><mat-label>Keyword</mat-label><input matInput formControlName="keyword"></mat-form-field>
+      <div class="flex items-center gap-2"><button mat-flat-button color="primary" type="button" (click)="load()">Search</button><button mat-stroked-button type="button" (click)="exportExcel()">Excel</button><button mat-stroked-button type="button" (click)="exportPdf()">PDF</button></div>
+    </form>
+  </mat-card>
+
+  <mat-card class="p-2">
+    <mat-tab-group (selectedIndexChange)="tabChanged($event)">
+      <mat-tab label="Daily Sales"></mat-tab>
+      <mat-tab label="Number Summary"></mat-tab>
+      <mat-tab label="Risk Numbers"></mat-tab>
+      <mat-tab label="Customer History"></mat-tab>
+      <mat-tab label="Profit/Loss"></mat-tab>
+    </mat-tab-group>
+  </mat-card>
+
+  <mat-card class="p-4" *ngIf="active===0">
+    <div class="h-64"><canvas id="salesChart"></canvas></div>
+  </mat-card>
+
+  <mat-card class="p-4">
+    <div *ngIf="loading" class="flex justify-center p-6"><mat-spinner diameter="32"></mat-spinner></div>
+    <div *ngIf="!loading" class="overflow-auto">
+      <table mat-table [dataSource]="data" class="w-full">
+        <ng-container matColumnDef="col1"><th mat-header-cell *matHeaderCellDef>Col 1</th><td mat-cell *matCellDef="let r">{{ r.Date || r.Number || r.CustomerName }}</td></ng-container>
+        <ng-container matColumnDef="col2"><th mat-header-cell *matHeaderCellDef>Col 2</th><td mat-cell *matCellDef="let r">{{ r.TicketCount || r.Frequency || (r.LastTicketAtUtc | date:'short') }}</td></ng-container>
+        <ng-container matColumnDef="col3"><th mat-header-cell *matHeaderCellDef>Col 3</th><td mat-cell *matCellDef="let r">{{ r.SalesAmount || r.TotalAmount || r.PayoutAmount || '-' }}</td></ng-container>
+        <ng-container matColumnDef="col4"><th mat-header-cell *matHeaderCellDef>Col 4</th><td mat-cell *matCellDef="let r">{{ r.ProfitAmount || r.RiskScore || '-' }}</td></ng-container>
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      </table>
+    </div>
+    <mat-paginator [length]="totalCount" [pageIndex]="(filterForm.value.page||1)-1" [pageSize]="filterForm.value.pageSize||10" [pageSizeOptions]="[10,20,50]" (page)="onPage($event)"></mat-paginator>
+  </mat-card>
+</section>
