@@ -2,6 +2,7 @@ using LotterySystem.Application.Interfaces;
 using LotterySystem.Domain.Entities;
 using LotterySystem.Domain.Enums;
 using LotterySystem.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 
