@@ -3,6 +3,7 @@ using LotterySystem.Domain.Entities;
 using LotterySystem.Domain.Enums;
 using LotterySystem.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
+using Npgsql;
 
 namespace LotterySystem.API.Controllers;
 
@@ -15,7 +16,19 @@ public sealed class SeedController(IRepository<User> users, IUnitOfWork unitOfWo
     {
         await dbContext.Database.EnsureCreatedAsync(cancellationToken);
 
-        var list = await users.GetAllAsync(cancellationToken);
+        List<User> list;
+        try
+        {
+            list = await users.GetAllAsync(cancellationToken);
+        }
+        catch (PostgresException ex) when (ex.SqlState == "42P01")
+        {
+            // Some managed Postgres setups may skip EnsureCreated when other system tables already exist.
+            var createScript = dbContext.Database.GenerateCreateScript();
+            await dbContext.Database.ExecuteSqlRawAsync(createScript, cancellationToken);
+            list = await users.GetAllAsync(cancellationToken);
+        }
+
         if (list.Any(x => x.Username == "admin"))
         {
             return Ok("Admin already exists");
