@@ -33,8 +33,7 @@ public sealed class SeedController(IRepository<User> users, IUnitOfWork unitOfWo
               "IsDeleted" boolean NOT NULL DEFAULT FALSE
             );
             CREATE UNIQUE INDEX IF NOT EXISTS "IX_Users_Username" ON "Users" ("Username");
-            """,
-            cancellationToken);
+            """);
 
         var adminHash = BCrypt.Net.BCrypt.HashPassword("Admin@123");
         var staffHash = BCrypt.Net.BCrypt.HashPassword("Staff@123");
@@ -48,8 +47,7 @@ public sealed class SeedController(IRepository<User> users, IUnitOfWork unitOfWo
             ON CONFLICT ("Username") DO NOTHING;
             """,
             Guid.NewGuid(), adminHash, DateTime.UtcNow,
-            Guid.NewGuid(), staffHash, DateTime.UtcNow,
-            cancellationToken);
+            Guid.NewGuid(), staffHash, DateTime.UtcNow);
 
         return Ok("Seed complete. admin/Admin@123 and staff/Staff@123 are ready.");
     }
