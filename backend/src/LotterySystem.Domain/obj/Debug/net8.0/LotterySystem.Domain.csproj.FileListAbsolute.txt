@@ -9,3 +9,4 @@ D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotteryS
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\refint\LotterySystem.Domain.dll
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.pdb
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\ref\LotterySystem.Domain.dll
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Domain\obj\Debug\net8.0\LotterySystem.Domain.sourcelink.json

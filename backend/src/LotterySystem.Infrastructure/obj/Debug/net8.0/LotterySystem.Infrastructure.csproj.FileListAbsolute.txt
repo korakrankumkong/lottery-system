@@ -36,3 +36,4 @@ D:\ProjectAPP\Lottery\backend\src\LotterySystem.Infrastructure\bin\Debug\net8.0\
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.Infrastructure\bin\Debug\net8.0\LatoFont\Lato-Thin.ttf
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.Infrastructure\bin\Debug\net8.0\LatoFont\Lato-ThinItalic.ttf
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.Infrastructure\bin\Debug\net8.0\LatoFont\OFL.txt
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.Infrastructure\obj\Debug\net8.0\LotterySystem.Infrastructure.sourcelink.json

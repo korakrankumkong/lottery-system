@@ -97,3 +97,4 @@ D:\ProjectAPP\Lottery\backend\src\LotterySystem.API\bin\Debug\net8.0\runtimes\os
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.API\bin\Debug\net8.0\runtimes\osx-x64\native\libQuestPdfSkia.dylib
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.API\bin\Debug\net8.0\runtimes\win-x64\native\QuestPdfSkia.dll
 D:\ProjectAPP\Lottery\backend\src\LotterySystem.API\bin\Debug\net8.0\runtimes\win-x86\native\QuestPdfSkia.dll
+D:\ProjectAPP\Lottery\backend\src\LotterySystem.API\obj\Debug\net8.0\LotterySystem.API.sourcelink.json
