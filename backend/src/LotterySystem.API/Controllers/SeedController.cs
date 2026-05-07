@@ -32,6 +32,10 @@ public sealed class SeedController(IRepository<User> users, IUnitOfWork unitOfWo
               "DeletedAtUtc" timestamp with time zone NULL,
               "IsDeleted" boolean NOT NULL DEFAULT FALSE
             );
+            """);
+
+        await dbContext.Database.ExecuteSqlRawAsync(
+            """
             CREATE UNIQUE INDEX IF NOT EXISTS "IX_Users_Username" ON "Users" ("Username");
             """);
 
@@ -41,12 +45,17 @@ public sealed class SeedController(IRepository<User> users, IUnitOfWork unitOfWo
         await dbContext.Database.ExecuteSqlRawAsync(
             """
             INSERT INTO "Users" ("Id","Username","PasswordHash","FullName","Role","CreatedAtUtc","IsDeleted")
-            VALUES
-              ({0}, 'admin', {1}, 'System Admin', 1, {2}, FALSE),
-              ({3}, 'staff', {4}, 'System Staff', 2, {5}, FALSE)
+            VALUES ({0}, 'admin', {1}, 'System Admin', 1, {2}, FALSE)
             ON CONFLICT ("Username") DO NOTHING;
             """,
-            Guid.NewGuid(), adminHash, DateTime.UtcNow,
+            Guid.NewGuid(), adminHash, DateTime.UtcNow);
+
+        await dbContext.Database.ExecuteSqlRawAsync(
+            """
+            INSERT INTO "Users" ("Id","Username","PasswordHash","FullName","Role","CreatedAtUtc","IsDeleted")
+            VALUES ({0}, 'staff', {1}, 'System Staff', 2, {2}, FALSE)
+            ON CONFLICT ("Username") DO NOTHING;
+            """,
             Guid.NewGuid(), staffHash, DateTime.UtcNow);
 
         return Ok("Seed complete. admin/Admin@123 and staff/Staff@123 are ready.");
