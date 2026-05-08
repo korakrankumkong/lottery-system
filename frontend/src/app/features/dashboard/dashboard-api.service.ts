@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, map } from 'rxjs';
+import { catchError, forkJoin, map, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { DashboardViewModel, RecentTicket, RiskyNumber, RoundStatus, SalesPoint } from './dashboard.models';
 
@@ -20,11 +20,11 @@ export class DashboardApiService {
     from30Days.setHours(0, 0, 0, 0);
 
     return forkJoin({
-      totalsToday: this.http.get<any>(`${this.baseUrl}/tickets/totals`, { params: { fromUtc: start.toISOString(), toUtc: now.toISOString() } }),
-      risky: this.http.get<any>(`${this.baseUrl}/tickets/risky-numbers`, { params: { fromUtc: start.toISOString(), toUtc: now.toISOString(), top: 10 } }),
-      history: this.http.get<any>(`${this.baseUrl}/tickets/history`, { params: { page: 1, pageSize: 8 } }),
-      rounds: this.http.get<RoundStatus[]>(`${this.baseUrl}/lotteryrounds`),
-      daily: this.http.get<any>(`${this.baseUrl}/tickets/daily-summary`, { params: { fromUtc: from30Days.toISOString(), toUtc: now.toISOString() } })
+      totalsToday: this.http.get<any>(`${this.baseUrl}/tickets/totals`, { params: { fromUtc: start.toISOString(), toUtc: now.toISOString() } }).pipe(catchError(() => of({ data: { totalAmount: 0 } }))),
+      risky: this.http.get<any>(`${this.baseUrl}/tickets/risky-numbers`, { params: { fromUtc: start.toISOString(), toUtc: now.toISOString(), top: 10 } }).pipe(catchError(() => of({ data: [] }))),
+      history: this.http.get<any>(`${this.baseUrl}/tickets/history`, { params: { page: 1, pageSize: 8 } }).pipe(catchError(() => of({ data: [] }))),
+      rounds: this.http.get<RoundStatus[]>(`${this.baseUrl}/lotteryrounds`).pipe(catchError(() => of([] as RoundStatus[]))),
+      daily: this.http.get<any>(`${this.baseUrl}/tickets/daily-summary`, { params: { fromUtc: from30Days.toISOString(), toUtc: now.toISOString() } }).pipe(catchError(() => of({ data: [] })))
     }).pipe(
       map(({ totalsToday, risky, history, rounds, daily }): DashboardViewModel => {
         const totalsData = totalsToday?.Data ?? totalsToday?.data ?? totalsToday;
